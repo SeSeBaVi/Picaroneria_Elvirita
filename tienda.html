@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picarones Elvirita - Tienda</title>
+    <style>
+        :root {
+            --color-primario: #D8B48A;
+            --color-secundario: #5C3B28;
+            --color-accento: #C76F4A;
+            --color-texto: #333;
+            --color-fondo: #f9f5f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--color-secundario);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--color-primario);
+        }
+        
+        .logo span {
+            color: var(--color-accento);
+        }
+        
+        .logo img {
+            height: 48px;
+            display: block;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            position: relative;
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            padding: 10px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--color-secundario);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            display: block;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .dropdown-content a:hover {
+            background-color: var(--color-accento);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--color-accento);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .page-header {
+            background: linear-gradient(rgba(92, 59, 40, 0.85), rgba(92, 59, 40, 0.85)), url('img/picarones3.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+        
+        .shop-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .sidebar-filter {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .filter-section {
+            margin-bottom: 30px;
+        }
+        
+        .filter-section h3 {
+            color: var(--color-secundario);
+            margin-bottom: 15px;
+            font-size: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-primario);
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .filter-option input {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .filter-option label {
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .price-range {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .price-range input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .products-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .shop-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .results-count {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .sort-options select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            height: 240px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--color-accento);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .product-badge.new {
+            background-color: #4CAF50;
+        }
+        
+        .product-badge.sale {
+            background-color: #f44336;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-category {
+            color: #999;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .product-title {
+            color: var(--color-secundario);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .product-price {
+            color: var(--color-accento);
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .old-price {
+            color: #999;
+            font-size: 16px;
+            text-decoration: line-through;
+            margin-right: 8px;
+        }
+        
+        .add-to-cart {
+            background-color: var(--color-accento);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--color-secundario);
+            transform: scale(1.05);
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .stars {
+            color: #FFB800;
+            font-size: 14px;
+        }
+        
+        .rating-count {
+            color: #999;
+            font-size: 12px;
+        }
+        
+        footer {
+            background-color: var(--color-secundario);
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section h3 {
+            color: var(--color-primario);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a:hover {
+            color: var(--color-primario);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--color-accento);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 992px) {
+            .shop-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar-filter {
+                position: static;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .page-header h1 {
+                font-size: 36px;
+            }
+            
+            .shop-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo"><img src="img/logo.jpg" alt="Picarones Elvirita logo"></div>
+            <nav>
+                <ul>
+                    <li><a href="blog.html">Inicio</a></li>
+                    <li><a href="tienda.html" style="background-color: rgba(255,255,255,0.1);">Carta</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Nuestra Carta</h1>
+            <p>Nuestros productos artesanales de la cocina a la mesa</p>
+        </div>
+    </section>
+
+    <div class="container shop-layout">
+        <aside class="sidebar-filter">
+            <div class="filter-section">
+                <h3>Categorías</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat1" checked>
+                    <label for="cat1">Todos los productos</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat2">
+                    <label for="cat2">Picarones frescos</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat3">
+                    <label for="cat3">Maamorras</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat4">
+                    <label for="cat4">Mieles</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat5">
+                    <label for="cat5">Hamburguesas</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="cat6">
+                    <label for="cat6">Salchipapas</label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Rango de Precio</h3>
+                <div class="price-range">
+                    <input type="number" placeholder="Min S/." min="0">
+                    <input type="number" placeholder="Max S/." min="0">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3>Disponibilidad</h3>
+                <div class="filter-option">
+                    <input type="checkbox" id="stock1">
+                    <label for="stock1">En stock</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="stock2">
+                    <label for="stock2">Pre-orden</label>
+                </div>
+            </div>
+        </aside>
+
+        <div class="products-section">
+            <div class="shop-controls">
+                <div class="results-count">
+                    Mostrando 12 de 45 productos
+                </div>
+                <div class="sort-options">
+                    <select>
+                        <option>Ordenar por: Destacados</option>
+                        <option>Precio: Menor a Mayor</option>
+                        <option>Precio: Mayor a Menor</option>
+                        <option>Más Nuevos</option>
+                        <option>Mejor Valorados</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/picarones1.jpg');">
+                        <span class="product-badge">Popular</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Picarones Frescos</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(48)</span>
+                        </div>
+                        <h3 class="product-title">Picarones Tradicionales (6 unidades)</h3>
+                        <p class="product-description">Picarones recién hechos con nuestra receta original, incluye miel de chancaca.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 15.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/miel.jpg');">
+                        <span class="product-badge">Popular</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Ingredientes</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(62)</span>
+                        </div>
+                        <h3 class="product-title">Miel de Chancaca Artesanal</h3>
+                        <p class="product-description">Miel de chancaca preparada con panela pura, perfecta para picarones.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 12.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/picaron_kit.jpg');">
+                        <span class="product-badge new">Nuevo</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Kits y Paquetes</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(35)</span>
+                        </div>
+                        <h3 class="product-title">Kit Completo para Hacer Picarones</h3>
+                        <p class="product-description">Todo lo necesario: harina, especias, receta ilustrada y molde especial.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 45.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/delantal.jpg');">
+                        <span class="product-badge sale">-20%</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Souvenirs</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐</span>
+                            <span class="rating-count">(28)</span>
+                        </div>
+                        <h3 class="product-title">Delantal "Maestro Picaronero"</h3>
+                        <p class="product-description">Delantal de algodón con diseño exclusivo y bolsillos funcionales.</p>
+                        <div class="product-footer">
+                            <div>
+                                <span class="old-price">S/. 50.00</span>
+                                <span class="product-price">S/. 40.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/picaron_kit.jpg');">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Ingredientes</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(41)</span>
+                        </div>
+                        <h3 class="product-title">Mezcla de Especias Premium</h3>
+                        <p class="product-description">Anís, canela y clavo de olor seleccionados para picarones perfectos.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 18.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/picaron_variedad.jpg');">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Picarones Frescos</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(55)</span>
+                        </div>
+                        <h3 class="product-title">Picarones de Camote Morado (6 und)</h3>
+                        <p class="product-description">Variante especial con camote morado, sabor único y color vibrante.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 18.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/picarones4.jpg');">
+                        <span class="product-badge">Popular</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Kits y Paquetes</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(72)</span>
+                        </div>
+                        <h3 class="product-title">Paquete Familiar (12 picarones)</h3>
+                        <p class="product-description">Docena de picarones frescos con doble porción de miel de chancaca.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 28.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('https://images.unsplash.com/photo-1471943311424-646960669fbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80');">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Souvenirs</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐</span>
+                            <span class="rating-count">(23)</span>
+                        </div>
+                        <h3 class="product-title">Taza Cerámica "Picarones Lovers"</h3>
+                        <p class="product-description">Taza artesanal con diseños de picarones, perfecta para café o té.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 25.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/harina_camote.jpg');">
+                        <span class="product-badge sale">-15%</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Ingredientes</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-count">(37)</span>
+                        </div>
+                        <h3 class="product-title">Harina de Camote Orgánica (500g)</h3>
+                        <p class="product-description">Harina de camote 100% natural, sin aditivos ni preservantes.</p>
+                        <div class="product-footer">
+                            <div>
+                                <span class="old-price">S/. 20.00</span>
+                                <span class="product-price">S/. 17.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('img/cuchara_miel.jpg');">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Utensilios</div>
+                        <div class="rating">
+                            <span class="stars">⭐⭐⭐⭐</span>
+                            <span class="rating-count">(15)</span>
+                        </div>
+                        <h3 class="product-title">Cuchara Dosificadora para Miel</h3>
+                        <p class="product-description">Cuchara especial para servir miel de chancaca sin derrames.</p>
+                        <div class="product-footer">
+                            <div class="product-price">S/. 10.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Somos apasionados por la gastronomía peruana y nos especializamos en la elaboración artesanal de picarones tradicionales.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="blog.html">Inicio</a></li>
+                        <li><a href="tienda.html">Carta</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Síguenos</h3>
+                    <div class="social-icons">
+                        <a href="#">FB</a>
+                        <a href="https://www.instagram.com/picarones_elvirita/">IG</a>
+                        <a href="#">TW</a>
+                        <a href="#">YT</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Picarones Deliciosos. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+        const cartCountElement = document.querySelector('.cart-count');
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cartCount++;
+                cartCountElement.textContent = cartCount;
+                
+                button.textContent = '✓ Agregado';
+                button.style.backgroundColor = '#4CAF50';
+                
+                setTimeout(() => {
+                    button.textContent = 'Agregar';
+                    button.style.backgroundColor = '';
+                }, 1500);
+            });
+        });
+
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('add-to-cart')) {
+                    alert('Ver detalles del producto');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
